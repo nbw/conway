@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="initial-scale=0.35, maximum-scale=0.35">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119252446-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-119252446-2');
+    </script>
+    <title>
+      Conway's Webcam of Life
+    </title>
+  </head>
+  <body>
+    <h1 id="conway" class="center-text">Conways Webcam of Life</h1>
+    <div class="row">
+      <video id="video" autoplay></video>
+      <canvas id="canvas"></canvas>
+      <div id="start" class="hidden">
+        <button>Start</button>
+        <span>Camera settings below</span>
+      </div>
+    </div>
+    <div id="video-settings" class="row hidden">
+      <p class="center-text">Click or tap the screen above to begin.</p>
+      <div id="settings">
+        <div class="row center-text title">Camera Settings</div>
+        <div>
+          <label>Threshold:</label>
+          <button id="threshold-plus">+</button>
+          <button id="threshold-minus">-</button>
+        </div>
+        <div>
+          <label>Fill Shapes:</label>
+          <button id="toggle-fill">toggle</button>
+        </div>
+        <div>
+          <label>Pixel Size:</label>
+          <ul id="pixels">
+            <li><div class="pixel" val=2></div></li>
+            <li><div class="pixel" val=4></div></li>
+            <li><div class="pixel" val=6></div></li>
+            <li><div class="pixel" val=8></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <ul id="github">
+      <li>
+        <a href="https://github.com/nbw/conway">Code</a> available on github.
+      </li>
+      <li>
+        <a class="github-button" href="https://github.com/nbw/conway" data-icon="octicon-star" data-show-count="true" aria-label="Star nbw/conway on GitHub">Star</a>
+        <a class="github-button" href="https://github.com/nbw/conway/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork nbw/conway on GitHub">Fork</a>
+      </li>
+    </ul>
+    <div class="row">
+      Read about how the code works here.
+    </div>
+    <div class="row">
+      <a href="https://twitter.com/_nathanbw">@_nathanbw</a>
+    </div>
+  </footer>
+  <div id="webcam-warn" class="modal hidden">
+    <div class="modal-content">
+      <div class="title">
+        Hello,
+      </div>
+      <p>
+        Conway's Webcam of Life requires access to your camera, but nothing is recorded or saved; everything is calculated in-browser. If you'd like, you can look at the code <a href="https://github.com/nbw/conway">here</a>.
+      </p>
+      <button id="webcam-warn-dismiss">Got it</button>
+    </div>
+  </div>
+  <div id="webcam-missing" class="modal hidden">
+    <div class="modal-content">
+      <p class="center-text">
+        No webcam detected!
+      </p>
+    </div>
+  </div>
+</body>
+  <script src="js/pixel_video.js"></script>
+  <script src="js/canvas_conway_engine.js"></script>
+  <script src="js/conway.js"></script>
+  <script>
+    DEFAULT_FRAME_RATE = 10;
+    DEFAULT_PIXEL_SIZE = 6;
+
+    CANVAS = document.getElementById('canvas');
+    CANVAS.width  = 672; //672 is divisible by 2,4,6,8
+    CANVAS.height = 672;
+
+    VIDEO = new PixelVideo(
+      document.querySelector('video'),
+      CANVAS,
+      DEFAULT_FRAME_RATE,
+      DEFAULT_PIXEL_SIZE
+    );
+
+    // Show 'webcam required modal' on first visit.
+    if (document.cookie.split(';').filter(function(item) {
+        return item.indexOf('webcam_warned=') >= 0
+    }).length) {
+      VIDEO.init();
+    } else {
+      document.getElementById('webcam-warn').classList.remove("hidden");
+      document.getElementById('webcam-warn-dismiss').addEventListener("click", function() {
+        document.getElementById('webcam-warn').classList.add("hidden");
+        document.cookie = "webcam_warned=true";
+        VIDEO.init();
+      });
+    }
+
+    // Handler for starting Conway's game of life
+    document.getElementById("start").addEventListener("click", function() {
+      document.getElementById("conway").scrollIntoView(true);
+
+      VIDEO.pause();
+
+      const pixelSize = VIDEO.pixelSize();
+
+      const conwayGrid = CanvasConwayEngine.canvasToConway(CANVAS, pixelSize);
+
+      setTimeout(run, 1000, CANVAS, conwayGrid, CANVAS.width/pixelSize, CANVAS.height/pixelSize, pixelSize);
+    });
+
+    // Runs Conway's game and renders it on the canvas
+    //
+    // 1. Determine the next conway life cycle
+    // 2. Render it on the canvas
+    // 3. Repeat after 65 ms (arbitrary)
+    function run(canvas, conwayGrid, conwayWidth, conwayHeight, pixelSize) {
+      let newGrid = Conway.step(conwayGrid, conwayWidth, conwayHeight);
+
+      CanvasConwayEngine.conwayToCanvas(canvas, newGrid, pixelSize);
+
+      setTimeout(self.run, 65, canvas, newGrid, conwayWidth, conwayHeight, pixelSize);
+    }
+  </script>
+</html>

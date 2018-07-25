@@ -1,0 +1,256 @@
+@font-face {
+  font-family: FreePixel;
+  src: url(fonts/FreePixel.ttf);
+}
+
+@font-face {
+  font-family: Retro-Computer;
+  src: url(fonts/Petyka-Retro-Computer.ttf);
+}
+
+html { font-size:62.5%; }
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: FreePixel;
+  font-size: 1.9rem;
+  margin: auto;
+}
+
+a {
+  color: #000;
+}
+a:hover {
+  font-weight: 600;
+}
+
+h1,h2,h3,h4{ font-family: Retro-Computer; }
+
+button:focus { outline: none; }
+
+video { display:none; }
+
+canvas {
+  display: block;
+  margin: auto;
+}
+
+footer {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  text-align: center;
+}
+
+footer > * {
+  margin-bottom: 50px;
+}
+
+#start {
+  position: absolute;
+  height: 672px;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 672px;
+
+  -webkit-transition: background-color 0.27s; /* Safari */
+  transition: background-color 0.27s ease-out;
+}
+#start button{ opacity: 0; }
+#start:hover {
+  background-color: rgba(0,0,0,0.65);
+}
+#start:hover button, #start:hover span{ opacity: 1; }
+#start button {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateY(-50%);
+  width: 100px;
+
+  -webkit-transition: background-color 0.15s; /* Safari */
+  transition: background-color 0.15s ease-out;
+
+  background-color: rgba(0,0,0,0);
+  border: 2px solid #FFF;
+  color: #FFF;
+  display: block;
+  font-family: Retro-Computer;
+  font-size: 1.8rem;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  padding: 5px 10px 10px 10px;
+  text-transform: uppercase;
+  text-align: center;
+}
+#start button:hover {
+  color: #000;
+  background-color: #FFF;
+}
+#start span {
+  color: #FFF;
+  font-family: Retro-Computer;
+  font-size: 1.2rem;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  opacity: 0;
+  text-align: center;
+  text-transform: uppercase;
+  top: 60%;
+  width: 250px;
+}
+
+#settings {
+  text-transform: uppercase;
+  display: block;
+  margin: auto;
+  margin-top: 50px;
+  border: 2pt dotted #000;
+  padding: 15px;
+  width: 250px;
+}
+#settings div > * {
+  vertical-align: middle;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+#settings .title {
+  font-size: 1.6rem;
+  font-family: Retro-Computer;
+  margin-bottom: 20px;
+}
+#settings label {
+  display: inline-block;
+  width: 125px;
+  text-align: right;
+}
+#settings button {
+  border: 1pt solid #000;
+  background-color: #FFF;
+  color: #000;
+  font-family: FreePixel;
+  text-transform: uppercase;
+}
+#settings button:hover {
+  border: 1pt solid #000;
+  background-color: #000;
+  color: #FFF;
+}
+
+#toggle-fill {
+  padding-top: 5px;
+}
+
+#github {
+  list-style: none;
+  padding: 0;
+}
+#github li {
+  margin-bottom: 10px;
+}
+
+#pixels {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#pixels li {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid black;
+}
+#pixels li:hover {
+  transform: scale(1.1);
+}
+
+.center-text { text-align: center; }
+
+.row {
+  width: 100%;
+  position: relative;
+}
+
+.content.row {
+  width: 80%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.pixel {
+  background-color: #000;
+  display: inline-block;
+}
+.pixel[val="2"] {
+  margin: 7px;
+  width: 2px;
+  height: 2px;
+}
+.pixel[val="4"] {
+  margin: 6px;
+  width: 4px;
+  height: 4px;
+}
+.pixel[val="6"] {
+  margin: 5px;
+  width: 6px;
+  height: 6px;
+}
+.pixel[val="8"] {
+  margin: 4px;
+  width: 8px;
+  height: 8px;
+}
+
+.modal {
+  display: block;
+  position: absolute;
+  vertical-align: middle;
+  top: 25%;
+  width: 100%;
+  z-index: 1;
+}
+.modal a { color: #fff; }
+.modal button {
+  display: block;
+  background-color: #FFF;
+  border: solid 1px #FFF;
+  color: #000;
+  font-family: Retro-Computer;
+  font-size: 2.2rem;
+  margin: auto;
+  padding: 5px 10px 10px 10px;
+}
+.modal button:hover {
+  background-color: #000;
+  color: #FFF;
+}
+.modal .modal-content {
+  background-color: #000;
+  color: #FFF;
+  font-size: 2.5rem;
+  margin: auto;
+  padding: 30px;
+  width: 400px;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal .title {
+  font-family: Retro-Computer;
+  font-size: 3rem;
+}
